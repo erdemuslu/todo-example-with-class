@@ -14,12 +14,12 @@ class Todo {
     return this.input.value;
   }
 
-  setEmpty() {
-    this.input.value = "";
+  get hasItem() {
+    return this.todoArr.filter(({ title }) => title === this.value).length > 0;
   }
 
-  validation() {
-    if (this.value.length < 1) {
+  get validation() {
+    if (this.value.length < 1 || this.hasItem) {
       // add error class
       this.input.classList.add('is-error');
 
@@ -30,6 +30,14 @@ class Todo {
     this.input.classList.remove('is-error');
 
     return true;
+  }
+
+  set arr(title) {
+    return this.todoArr.push({ title });
+  }
+
+  setEmpty() {
+    this.input.value = "";
   }
 
   createList(value) {
@@ -49,11 +57,16 @@ class Todo {
   }
 
   saveItem() {
-    this.form.onsubmit = () => {
-      event.preventDefault();
+    this.form.onsubmit = (e) => {
+      e.preventDefault();
 
       // validation
-      this.validation();
+      if (!this.validation) {
+        return false;
+      }
+
+      // add item to arr
+      this.arr = this.value;
 
       // render html
       this.list.appendChild(
