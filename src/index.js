@@ -50,7 +50,7 @@ class Todo {
     // set html
     li.innerHTML = `
       <span>${value}</span>
-      <button class="button button-xs" type="button">remove</button>
+      <button class="button button-xs" data-type="remove-item" type="button">remove</button>
     `;
 
     return li;
@@ -78,9 +78,25 @@ class Todo {
     }
   }
 
+  removeItem() {
+    document.onclick = ({ target }) => {
+      if (target.getAttribute('data-type') === 'remove-item') {
+        // define parent item
+        const li = target.closest('li');
+
+        li.classList.add('is-hidden');
+
+        setTimeout(() => {
+          li.remove();
+        }, 321);
+      }
+    }
+  }
+
   init() {
     // methods
     this.saveItem();
+    this.removeItem();
   }
 }
 

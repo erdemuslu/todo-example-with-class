@@ -76,11 +76,17 @@ ul {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  max-height: 100vh;
   padding: 16px 24px;
   animation-name: fade-in;
+  animation-fill-mode: none, forwards;
   animation-duration: .32s;
   animation-iteration-count: 1;
   animation-timing-function: linear;
+}
+
+.is-hidden {
+  animation-name: fade-in, fade-out;
 }
 
 .todo-list__item:nth-child(odd) {
@@ -116,5 +122,12 @@ ul {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+    max-height: 0;
   }
 }
