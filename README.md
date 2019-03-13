@@ -1,2 +1,1 @@
-# firefox-debugger-example
-A todo example to test debugger on Firefox
+# A todo example with javascript
