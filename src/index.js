@@ -5,9 +5,12 @@ class Todo {
     this.form = document.querySelector('.todo-form');
     this.input = document.getElementById('title');
     this.list = document.querySelector('.todo-list');
+    this.formFooter = document.querySelector('.todo-form-row--footer');
 
     // payload
     this.todoArr = [];
+    this.targetIndex = null;
+    this.message = 'title is empty or already exist!'
   }
 
   get value() {
@@ -23,8 +26,14 @@ class Todo {
       // add error class
       this.input.classList.add('is-error');
 
+      // append error message
+      this.handleError();
+
       return false;
     }
+
+    // remove error message
+    document.querySelector('.error') !== null ? document.querySelector('.error').remove() : null;
 
     // remove error class
     this.input.classList.remove('is-error');
@@ -32,6 +41,9 @@ class Todo {
     return true;
   }
 
+  /**
+   * @param {string} title
+  */
   set arr(title) {
     return this.todoArr.push({ title });
   }
@@ -40,20 +52,39 @@ class Todo {
     this.input.value = "";
   }
 
-  createList(value) {
+  findAndRemove(value) {
+    this.todoArr.map((item, index) => {
+      if (item.title === value) {
+        return this.targetIndex = index;
+      }
+    });
+
+    this.todoArr.splice(this.targetIndex, 1);
+  }
+
+  createEl({ name, className, html }) {
     // create element
-    const li = document.createElement('li');
+    const item = document.createElement(name);
 
     // set class name
-    li.setAttribute('class', 'todo-list__item');
+    item.setAttribute('class', className);
 
     // set html
-    li.innerHTML = `
-      <span>${value}</span>
-      <button class="button button-xs" data-type="remove-item" type="button">remove</button>
-    `;
+    item.innerHTML = html;
 
-    return li;
+    return item;
+  }
+
+  handleError() {
+    if (document.querySelector('.error') === null) {
+      this.formFooter.appendChild(
+        this.createEl({
+          name: 'div',
+          className: 'error',
+          html: this.message
+        })
+      );
+    }
   }
 
   saveItem() {
@@ -70,7 +101,14 @@ class Todo {
 
       // render html
       this.list.appendChild(
-        this.createList(this.value)
+        this.createEl({
+          name: 'li',
+          className: 'todo-list__item',
+          html: `
+            <span>${this.value}</span>
+            <button class="button button-xs" data-type="remove-item" type="button">remove</button>
+          `
+        })
       );
 
       // clear input value
@@ -81,11 +119,16 @@ class Todo {
   removeItem() {
     document.onclick = ({ target }) => {
       if (target.getAttribute('data-type') === 'remove-item') {
+        // remove item from array
+        this.findAndRemove(target.previousElementSibling.innerText);
+
         // define parent item
         const li = target.closest('li');
 
+        // hide el
         li.classList.add('is-hidden');
 
+        // remove el
         setTimeout(() => {
           li.remove();
         }, 321);
