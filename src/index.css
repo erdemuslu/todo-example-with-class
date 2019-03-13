@@ -1,0 +1,16 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: sans-serif;
+  color: #212121;
+}
+
+.todo {
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
