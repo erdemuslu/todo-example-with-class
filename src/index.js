@@ -4,6 +4,7 @@ class Todo {
     // dom elements
     this.form = document.querySelector('.todo-form');
     this.input = document.getElementById('title');
+    this.list = document.querySelector('.todo-list');
 
     // payload
     this.todoArr = [];
@@ -13,25 +14,38 @@ class Todo {
     return this.input.value;
   }
 
-  set list(title) {
-    if (title.length !== 0) {
-      return this.todoArr.push({ title })
-    }
+  setEmpty() {
+    this.input.value = "";
+  }
+
+  createList(value) {
+    // create element
+    const li = document.createElement('li');
+
+    // set class name
+    li.setAttribute('class', 'todo-list__item');
+
+    // set html
+    li.innerHTML = `
+      <span>${value}</span>
+      <button class="button button-xs" type="button">remove</button>
+    `;
+
+    return li;
   }
 
   saveItem() {
     this.form.onsubmit = () => {
       event.preventDefault();
 
-      this.list = this.value;
+      // render html
+      this.list.appendChild(
+        this.createList(this.value)
+      );
 
-      //
-      this.render();
+      // clear input value
+      this.setEmpty();
     }
-  }
-
-  render() {
-    console.log(this.todoArr);
   }
 
   init() {
