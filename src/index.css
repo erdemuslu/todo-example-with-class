@@ -77,6 +77,14 @@ ul {
   justify-content: space-between;
   align-items: center;
   padding: 16px 24px;
+  animation-name: fade-in;
+  animation-duration: .32s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+}
+
+.todo-list__item:nth-child(odd) {
+  background-color: #f8f8f8;
 }
 
 .todo-list__item:nth-child(even) {
@@ -92,4 +100,21 @@ ul {
 
 .todo-list__item:hover button {
   transform: translateX(0);
+}
+
+/* input error */
+.is-error {
+  border: 1px solid #e34c26;
+}
+
+/* animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

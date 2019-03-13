@@ -18,6 +18,20 @@ class Todo {
     this.input.value = "";
   }
 
+  validation() {
+    if (this.value.length < 1) {
+      // add error class
+      this.input.classList.add('is-error');
+
+      return false;
+    }
+
+    // remove error class
+    this.input.classList.remove('is-error');
+
+    return true;
+  }
+
   createList(value) {
     // create element
     const li = document.createElement('li');
@@ -37,6 +51,9 @@ class Todo {
   saveItem() {
     this.form.onsubmit = () => {
       event.preventDefault();
+
+      // validation
+      this.validation();
 
       // render html
       this.list.appendChild(
